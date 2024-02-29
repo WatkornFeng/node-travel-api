@@ -9,6 +9,7 @@ import cors from "cors";
 // import cookieParser from "cookie-parser";
 
 import userRouter from "./routes/userRoutes";
+import provincecRouter from "./routes/provinceRoutes";
 const app: Express = express();
 // const config = {
 //   authRequired: false,
@@ -42,6 +43,7 @@ app.use(express.json());
 
 app.use("/api/v1/hotels", hotelRouter);
 app.use("/api/v1/users", userRouter);
+app.use("/api/v1/provinces", provincecRouter);
 // app.use("/api/v1/auth");
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   const message = `Can't find ${req.originalUrl} on this server. Please try again`;

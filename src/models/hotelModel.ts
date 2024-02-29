@@ -28,6 +28,7 @@ const hotelSchema = new mongoose.Schema(
       max: [5, "Star must be below or equal than 5"],
     },
     rating: {
+      //***ทำเป็น ตาราง แยกไว้*/
       type: Number,
       required: [true, "rating must have rating"],
       min: [1, "Rating must be greater than 1"],
@@ -40,10 +41,12 @@ const hotelSchema = new mongoose.Schema(
       max: [30000, "price must be below than 30000 baht"],
     },
     property: {
+      //***ทำเป็น ตาราง แยกไว้*/
       type: String,
       required: [true, "Hotel must have property"],
     },
     location: {
+      //***ทำเป็น ตาราง แยกไว้*/
       type: String,
       required: [true, "Hotel must have location"],
       enum: {
@@ -51,6 +54,7 @@ const hotelSchema = new mongoose.Schema(
         message: "Location must be Thailand province",
       },
     },
+    //***ทำเป็น ตาราง แยกไว้*/
     facilities: [
       {
         type: String,
@@ -60,7 +64,7 @@ const hotelSchema = new mongoose.Schema(
       type: Number,
     },
   },
-  { strictQuery: true, toJSON: { virtuals: true } }
+  { strictQuery: true, toJSON: { virtuals: true }, id: false }
 );
 hotelSchema.pre("save", function (next) {
   this.slug = slugify(this.name, { lower: true });
