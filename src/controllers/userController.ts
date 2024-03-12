@@ -3,6 +3,7 @@ import { auth } from "express-oauth2-jwt-bearer";
 import { jwtDecode } from "jwt-decode";
 import User from "../models/userModel";
 import { AppError } from "../utils/AppError";
+import exp from "constants";
 export const jwtCheck = auth({
   // change audience later
   audience: "http://localhost:3000/profile",
@@ -30,10 +31,12 @@ export const signup = async (
 ) => {
   try {
     const { email, name, locale } = req.body as userData;
-    if (!email || !name) {
-      return next(new AppError("Please enter email and name", 400, "fail"));
+    // console.log(req.headers);
+
+    if (!email) {
+      return next(new AppError("Please enter email", 400, "fail"));
     }
-    // console.log(userData);
+
     // Check if the user already exists in DB return success
     const user = await User.findOne({ email });
     // console.log(user);
@@ -54,5 +57,22 @@ export const signup = async (
     });
   } catch (err) {
     next(err);
+  }
+};
+
+export const getAllUsers = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const users = await User.find();
+    // console.log(users);
+    res.status(200).json({
+      status: "success",
+      users,
+    });
+  } catch (error) {
+    next(error);
   }
 };

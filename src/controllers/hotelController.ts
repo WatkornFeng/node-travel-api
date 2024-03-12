@@ -4,8 +4,13 @@ import multer from "multer";
 import Hotel from "../models/hotelModel";
 import { AppError } from "../utils/AppError";
 import sharp from "sharp";
+import mongoose from "mongoose";
 
-export const getAllHotels = async (req: Request, res: Response) => {
+export const getAllHotels = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     /**
      Thani?
@@ -22,14 +27,17 @@ export const getAllHotels = async (req: Request, res: Response) => {
     */
     const queryObj = { ...req.query };
     const placeParam = req.params.place;
+    // console.log(queryObj);
+    // console.log(placeParam);
 
     let query = Hotel.find(queryObj);
 
     // query location
     query = query.where({ location: placeParam });
     // query star
-    if (queryObj.stars) {
-      query = query.where({ stars: queryObj.stars });
+    if (queryObj.star) {
+      // console.log(queryObj.star);
+      query = query.where({ star: queryObj.star });
     }
     // query property
     if (queryObj.property) {
@@ -53,6 +61,7 @@ export const getAllHotels = async (req: Request, res: Response) => {
     } else if (queryObj.sort === "RATING_LOW_TO_HIGH") {
       sortBy = "rating";
     }
+    // console.log(sortBy);
     // console.log(query);
     query = query.sort(sortBy);
 
@@ -71,14 +80,19 @@ export const getAllHotels = async (req: Request, res: Response) => {
       });
     }, delayTime);
   } catch (err) {
-    res.status(500).json({
-      status: "Error getting tour",
-      message: err,
-    });
+    // res.status(500).json({
+    //   status: "Error getting property",
+    //   message: err,
+    // });
+    next(err);
   }
 };
 
-export const getHotelStats = async (req: Request, res: Response) => {
+export const getHotelStats = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const stats = await Hotel.aggregate([
       { $match: { star: { $gte: 1 } } },
@@ -101,10 +115,11 @@ export const getHotelStats = async (req: Request, res: Response) => {
       },
     });
   } catch (err) {
-    res.status(500).json({
-      status: "Cal Stats Error",
-      message: err,
-    });
+    // res.status(500).json({
+    //   status: "Cal Stats Error",
+    //   message: err,
+    // });
+    next(err);
   }
 };
 export const getHotel = async (
@@ -113,8 +128,13 @@ export const getHotel = async (
   next: NextFunction
 ) => {
   try {
-    console.log(req.params.slug);
-    let query = Hotel.findOne({ slug: req.params.slug });
+    const { id, place } = req.params;
+
+    // let query = Hotel.findById(id).populate({
+    //   path: "province",
+    //   select: "-picture -pictureCover -__v",
+    // });
+    let query = Hotel.findById(id).populate("reviews");
 
     const hotel = await query;
 
@@ -160,14 +180,16 @@ const uploadImage = async (imagePath: string) => {
   // allow overwriting the asset with new versions
   const options = {
     use_filename: true,
-    unique_filename: false,
+    // unique_filename: true,
+    folder: "Provinces",
+    tags: ["Province"],
     overwrite: true,
   };
 
   try {
     // Upload the image
     const result = await cloudinary.uploader.upload(imagePath, options);
-    console.log(result);
+    // console.log(result);
     return result.public_id;
   } catch (error) {
     console.error(error);
@@ -179,7 +201,7 @@ export const resizeImageHotel = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log(req.file);
+  // console.log(req.file);
   if (!req.file) return next(new AppError("Please select file", 400, "fail"));
   try {
     const resizeImageBuffer = await sharp(req.file.buffer)
@@ -204,10 +226,10 @@ export const uploadImageHotel = async (
   try {
     const b64 = Buffer.from(req.file!.buffer).toString("base64");
     let dataURI = "data:" + req.file!.mimetype + ";base64," + b64;
-    console.log(dataURI);
+    // console.log(dataURI);
     // upload to Cloudinary
     const results = await uploadImage(dataURI);
-    console.log(results);
+    // console.log(results);
 
     res.status(200).json({
       status: "success",

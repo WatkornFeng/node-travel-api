@@ -1,15 +1,19 @@
 import express, { Express, Request, Response, NextFunction } from "express";
 import morgan from "morgan";
+import rateLimit from "express-rate-limit";
 // import { auth, requiresAuth } from "express-openid-connect";
-
-import hotelRouter from "./routes/hotelRoutes";
+import helmet from "helmet";
 import { AppError } from "./utils/AppError";
 import globalErrorHandler from "./controllers/errorController";
 import cors from "cors";
 // import cookieParser from "cookie-parser";
-
+import hpp from "hpp";
+import hotelRouter from "./routes/hotelRoutes";
 import userRouter from "./routes/userRoutes";
 import provincecRouter from "./routes/provinceRoutes";
+import reviewRouter from "./routes/reviewRoutes";
+import propertyTypeRouter from "./routes/propertyTypeRoutes";
+import amenityRouter from "./routes/amenityRoutes";
 const app: Express = express();
 // const config = {
 //   authRequired: false,
@@ -20,6 +24,7 @@ const app: Express = express();
 //   issuerBaseURL: process.env.AUTH0_ISSUER_BASE_URL,
 // };
 
+app.use(helmet());
 if (process.env.NODE_ENV === "development") {
   app.use(morgan("dev"));
 }
@@ -36,14 +41,29 @@ if (process.env.NODE_ENV === "development") {
 //   next();
 // });
 // app.use(cors({ origin: "http://localhost:5173" }));
+const limiter = rateLimit({
+  // 100 limit per hours in smae ip
+  max: 100,
+  windowMs: 60 * 60 * 1000,
+  message: "Too many request from this IP,please try again in an hour",
+});
+app.use("/api", limiter);
+
 app.use(cors());
-app.use(express.json());
-// app.use(cookieParser());
-// app.use(auth(config));
+app.use(express.json({ limit: "5mb" }));
+
+app.use(
+  hpp({
+    whitelist: ["star", "property"],
+  })
+);
 
 app.use("/api/v1/hotels", hotelRouter);
 app.use("/api/v1/users", userRouter);
 app.use("/api/v1/provinces", provincecRouter);
+app.use("/api/v1/reviews", reviewRouter);
+app.use("/api/v1/propertyType", propertyTypeRouter);
+app.use("/api/v1/amenity", amenityRouter);
 // app.use("/api/v1/auth");
 app.all("*", (req: Request, res: Response, next: NextFunction) => {
   const message = `Can't find ${req.originalUrl} on this server. Please try again`;

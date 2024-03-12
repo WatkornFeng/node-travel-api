@@ -1,7 +1,16 @@
 import express from "express";
-import { getProvinces } from "../controllers/provinceController";
+import {
+  getAllProvinces,
+  resizeProvincesImage,
+  uploadImageProvinces,
+} from "../controllers/provinceController";
+import { uploadImageHotel } from "../controllers/hotelController";
+import { multerUploadsProvinces } from "../utils/multer";
 const provincecRouter = express.Router();
 
-provincecRouter.route("/").get(getProvinces);
+provincecRouter
+  .route("/")
+  .get(getAllProvinces)
+  .post(multerUploadsProvinces, resizeProvincesImage, uploadImageProvinces);
 
 export default provincecRouter;

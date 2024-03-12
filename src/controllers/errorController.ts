@@ -5,6 +5,7 @@ import {
   InvalidTokenError,
   UnauthorizedError,
 } from "express-oauth2-jwt-bearer";
+import multer from "multer";
 
 const handleCastErrorDB = (err: mongoose.Error.CastError) => {
   const message = `Invalid ${err.path}: ${err.value}`;
@@ -21,23 +22,19 @@ const handleValidationErrorDB = (err: mongoose.Error.ValidationError) => {
 };
 
 const handleUnauthorizedError = (err: UnauthorizedError) => {
-  return new AppError(
-    "Unauthorized user!, Please log in again",
-    err.status,
-    "fail"
-  );
+  return new AppError("Requires authentication", err.status, "fail");
 };
 const handleInvalidTokenError = (err: InvalidTokenError) => {
-  return new AppError(
-    "Invalid token! Please log in again.",
-    err.statusCode,
-    "fail"
-  );
+  return new AppError("Bad credentials.", err.statusCode, "fail");
+};
+const handleUpLoadError = (err: multer.MulterError) => {
+  return new AppError(err.message, 400, "fail");
 };
 const sendProdErr = (err: AppError, res: Response) => {
   //Operation error,trust error:send to client
   if (err.isOperational) {
     const { statusCode, status, message } = err;
+
     return res.status(statusCode).json({
       status,
       message,
@@ -81,7 +78,12 @@ function globalErrorHandler(
       error = handleUnauthorizedError(error);
     if (error instanceof InvalidTokenError)
       error = handleInvalidTokenError(error);
-
+    // for token expired?
+    // if (error instanceof )
+    // error = handleUnauthorizedError(error);
+    if (error instanceof multer.MulterError) {
+      error = handleUpLoadError(error);
+    }
     if (error instanceof AppError) {
       return sendProdErr(error, res);
     }

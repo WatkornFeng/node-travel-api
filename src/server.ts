@@ -7,7 +7,6 @@ process.on("uncaughtException", (err: any) => {
   console.log(err.name, err.mesage);
   process.exit(1);
 });
-
 dotenv.config(); // Load environment variables from .env file
 import app from "./app";
 

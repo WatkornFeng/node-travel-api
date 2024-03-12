@@ -1,3 +1,5 @@
+import { MulterError } from "multer";
+
 export class AppError extends Error {
   readonly statusCode: number;
   readonly status: string;
