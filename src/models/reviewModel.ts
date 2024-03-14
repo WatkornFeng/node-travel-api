@@ -1,18 +1,32 @@
-import mongoose from "mongoose";
+import { Document, Model, model, Schema, Types } from "mongoose";
+import Hotel from "./hotelModel";
+// import { DocumentSetOptions } from 'mongoose';
 // reviewText
 // Excellent
 // Good
 // Okay
 // Poor
 // Terrible
-const reviewSchema = new mongoose.Schema({
+
+interface IReview extends Document {
+  hotel: Types.ObjectId;
+  user: Types.ObjectId;
+  rating: number;
+  comment: string;
+  createdAt: Date;
+}
+interface ReviewModel extends Model<IReview> {
+  calcAverageRatings(hotelId: Types.ObjectId): Promise<void>;
+}
+
+const reviewSchema = new Schema({
   hotel: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Types.ObjectId,
     ref: "Hotel",
     required: [true, "Review must belong to a hotel"],
   },
   user: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: Types.ObjectId,
     ref: "User",
     required: [true, "Review must belong to a user"],
   },
@@ -36,6 +50,48 @@ const reviewSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
 });
 
-const Review = mongoose.model("Review", reviewSchema);
+interface IReviewStatic {
+  _id: Types.ObjectId;
+  nRating: number;
+  avgRating: number;
+}
+reviewSchema.statics.calcAverageRatings = async function (
+  hotelId: Types.ObjectId
+) {
+  const stats: IReviewStatic[] = await this.aggregate([
+    { $match: { hotel: hotelId } },
+    {
+      $group: {
+        _id: "$hotel",
+        nRating: { $sum: 1 },
+        avgRating: { $avg: "$rating" },
+      },
+    },
+  ]);
+
+  if (stats.length > 0) {
+    await Hotel.findByIdAndUpdate(hotelId, {
+      ratingsAverage: stats[0].avgRating,
+      ratingsQuantity: stats[0].nRating,
+    });
+  } else {
+    await Hotel.findByIdAndUpdate(hotelId, {
+      ratingsAverage: 0,
+      ratingsQuantity: 0,
+    });
+  }
+  // console.log(stats);
+};
+
+reviewSchema.post("save", function () {
+  (this.constructor as ReviewModel).calcAverageRatings((this as IReview).hotel);
+});
+
+reviewSchema.post(/^findOneAnd/, async function (docs: IReview) {
+  if (docs) {
+    await (docs.constructor as ReviewModel).calcAverageRatings(docs.hotel);
+  }
+});
+const Review = model<IReview, ReviewModel>("Review", reviewSchema);
 
 export default Review;

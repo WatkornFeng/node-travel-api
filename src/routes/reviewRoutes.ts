@@ -1,8 +1,14 @@
 import express from "express";
-import { createReview, getAllReviews } from "../controllers/reviewController";
+import {
+  createReview,
+  deleteReview,
+  getAllReviews,
+  updateReview,
+} from "../controllers/reviewController";
 
-const reviewRouter = express.Router();
+const reviewRouter = express.Router({ mergeParams: true });
 
 reviewRouter.route("/").get(getAllReviews).post(createReview);
+reviewRouter.route("/:reviewId").patch(updateReview).delete(deleteReview);
 
 export default reviewRouter;

@@ -32,6 +32,7 @@ const handleUpLoadError = (err: multer.MulterError) => {
 };
 const sendProdErr = (err: AppError, res: Response) => {
   //Operation error,trust error:send to client
+
   if (err.isOperational) {
     const { statusCode, status, message } = err;
 
@@ -44,7 +45,7 @@ const sendProdErr = (err: AppError, res: Response) => {
     console.error("ERROR 💥", err);
     return res.status(500).json({
       status: "error",
-      message: "something went wrong",
+      message: "something very wrong",
     });
   }
 };
@@ -65,30 +66,52 @@ function globalErrorHandler(
   next: NextFunction
 ) {
   if (process.env.NODE_ENV === "production") {
-    let error: Error = Object.assign(err);
-    // handle Mongoose,Mongo DB error
+    // let error: Error = Object.assign(err);
+    let error: AppError = Object.assign(err);
+
     if (error instanceof mongoose.Error.CastError)
       error = handleCastErrorDB(error);
     if (error instanceof mongoose.Error.ValidationError)
       error = handleValidationErrorDB(error);
     if (error.name === "MongoServerError")
       error = handleDuplicateFieldsDB(error);
-    //new
     if (error instanceof UnauthorizedError)
       error = handleUnauthorizedError(error);
     if (error instanceof InvalidTokenError)
       error = handleInvalidTokenError(error);
-    // for token expired?
-    // if (error instanceof )
-    // error = handleUnauthorizedError(error);
-    if (error instanceof multer.MulterError) {
-      error = handleUpLoadError(error);
-    }
-    if (error instanceof AppError) {
-      return sendProdErr(error, res);
-    }
+    if (error instanceof multer.MulterError) error = handleUpLoadError(error);
+
+    return sendProdErr(error, res);
   }
   sendDevErr(err, res);
 }
 
 export default globalErrorHandler;
+// {
+//   if (process.env.NODE_ENV === "production") {
+//     let error: Error = Object.assign(err);
+//     // handle Mongoose,Mongo DB error
+//     if (error instanceof mongoose.Error.CastError)
+//       error = handleCastErrorDB(error);
+//     if (error instanceof mongoose.Error.ValidationError)
+//       error = handleValidationErrorDB(error);
+//     if (error.name === "MongoServerError")
+//       error = handleDuplicateFieldsDB(error);
+//     //new
+//     if (error instanceof UnauthorizedError)
+//       error = handleUnauthorizedError(error);
+//     if (error instanceof InvalidTokenError)
+//       error = handleInvalidTokenError(error);
+//     // for token expired?
+//     // if (error instanceof )
+//     // error = handleUnauthorizedError(error);
+//     if (error instanceof multer.MulterError) {
+//       error = handleUpLoadError(error);
+//     }
+//     if (error instanceof AppError) {
+//       return sendProdErr(error, res);
+//     }
+//   }
+//   console.log("dev");
+//   sendDevErr(err, res);
+// }

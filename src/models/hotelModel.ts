@@ -1,13 +1,33 @@
 import mongoose from "mongoose";
 import slugify from "slug";
 import { thaiProvinces } from "../utils/dataForValidation";
+import {
+  Document,
+  DocumentSetOptions,
+  Model,
+  model,
+  Schema,
+  Types,
+} from "mongoose";
+export interface IHotel extends Document {
+  name: string;
+  description: string;
+  slug: string;
+  image: string[];
+  star: number;
+  ratingsAverage: number;
+  ratingsQuantity: number;
+  price: number;
+  propertyType: Types.ObjectId;
+  province: Types.ObjectId;
+  amenities: Types.ObjectId;
+}
 const hotelSchema = new mongoose.Schema(
   {
     name: {
       type: String,
       required: [true, "Hotel must have name"],
       trim: true,
-      // unique: true,
       maxlength: [
         40,
         "A hotel name myst have less or equal than 40 characters",
@@ -40,12 +60,15 @@ const hotelSchema = new mongoose.Schema(
       min: [1, "Star must be greater or equal than 1"],
       max: [5, "Star must be below or equal than 5"],
     },
-    rating: {
-      //***ทำเป็น ตาราง แยกไว้*/
+    ratingsAverage: {
       type: Number,
-      required: [true, "rating must have rating"],
+      default: 0,
       min: [1, "Rating must be greater than 1"],
       max: [10, "Rating must be below than 10"],
+    },
+    ratingsQuantity: {
+      type: Number,
+      default: 0,
     },
     price: {
       type: Number,
@@ -53,11 +76,37 @@ const hotelSchema = new mongoose.Schema(
       min: [10, "price must be greater than 10 dollars"],
       max: [10000, "price must be below than 10000 dollars"],
     },
-    property: {
-      //***ทำเป็น ตาราง แยกไว้*/
-      type: String,
+
+    amenities: [
+      {
+        type: Types.ObjectId,
+        ref: "Amenity",
+      },
+    ],
+    propertyType: {
+      type: Types.ObjectId,
+      ref: "PropertyType",
       required: [true, "Hotel must have property type"],
     },
+    province: {
+      type: Types.ObjectId,
+      ref: "Province",
+      required: [true, "Hotel must have province"],
+    },
+    // rating: {
+    //   //***ทำเป็น ตาราง แยกไว้*/
+    //   type: Number,
+    //   required: [true, "rating must have rating"],
+    //   min: [1, "Rating must be greater than 1"],
+    //   max: [10, "Rating must be below than 10"],
+    // },
+    // rating: {
+    //   //***ทำเป็น ตาราง แยกไว้*/
+    //   type: Number,
+    //   required: [true, "rating must have rating"],
+    //   min: [1, "Rating must be greater than 1"],
+    //   max: [10, "Rating must be below than 10"],
+    // },
     // location: {
     //   //***ทำเป็น ตาราง แยกไว้*/
     //   type: String,
@@ -67,17 +116,18 @@ const hotelSchema = new mongoose.Schema(
     //     message: "Location must be Thailand province",
     //   },
     // },
-    province: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Province",
-      required: [true, "Hotel must have province"],
-    },
-    //***ทำเป็น ตาราง แยกไว้*/
-    facilities: [
-      {
-        type: String,
-      },
-    ],
+    // property: {
+    //   //***ทำเป็น ตาราง แยกไว้*/
+    //   type: String,
+    //   required: [true, "Hotel must have property type"],
+    // },
+
+    // facilities: [
+    //   //***ทำเป็น ตาราง แยกไว้*/
+    //   {
+    //     type: String,
+    //   },
+    // ],
   },
   { strictQuery: true, toJSON: { virtuals: true }, id: false }
 );
