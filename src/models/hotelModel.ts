@@ -13,14 +13,17 @@ export interface IHotel extends Document {
   name: string;
   description: string;
   slug: string;
-  image: string[];
-  star: number;
+  images: string[];
+  stars: number;
   ratingsAverage: number;
   ratingsQuantity: number;
   price: number;
   propertyType: Types.ObjectId;
   province: Types.ObjectId;
   amenities: Types.ObjectId;
+  ownerProperty: Types.ObjectId;
+  guestsQuantity: number;
+  bedsQuantity: number;
 }
 const hotelSchema = new mongoose.Schema(
   {
@@ -47,14 +50,24 @@ const hotelSchema = new mongoose.Schema(
         "A hotel description must have more or equal than 1 characters",
       ],
     },
+    location: {
+      type: {
+        type: String,
+        default: "Point",
+        enum: ["Point"],
+      },
+      coordinates: {
+        type: [Number],
+      },
+    },
     slug: String,
-    image: [
+    images: [
       {
         type: String,
-        required: true,
+        // required: true,
       },
     ],
-    star: {
+    stars: {
       type: Number,
       required: [true, "Hotel must have stars"],
       min: [1, "Star must be greater or equal than 1"],
@@ -63,8 +76,7 @@ const hotelSchema = new mongoose.Schema(
     ratingsAverage: {
       type: Number,
       default: 0,
-      min: [1, "Rating must be greater than 1"],
-      max: [10, "Rating must be below than 10"],
+      set: (val: number) => Math.round(val * 10) / 10,
     },
     ratingsQuantity: {
       type: Number,
@@ -77,12 +89,7 @@ const hotelSchema = new mongoose.Schema(
       max: [10000, "price must be below than 10000 dollars"],
     },
 
-    amenities: [
-      {
-        type: Types.ObjectId,
-        ref: "Amenity",
-      },
-    ],
+    amenities: [{ type: Types.ObjectId, ref: "Amenity" }],
     propertyType: {
       type: Types.ObjectId,
       ref: "PropertyType",
@@ -91,48 +98,30 @@ const hotelSchema = new mongoose.Schema(
     province: {
       type: Types.ObjectId,
       ref: "Province",
-      required: [true, "Hotel must have province"],
+      // required: [true, "Hotel must have province"],
     },
-    // rating: {
-    //   //***ทำเป็น ตาราง แยกไว้*/
-    //   type: Number,
-    //   required: [true, "rating must have rating"],
-    //   min: [1, "Rating must be greater than 1"],
-    //   max: [10, "Rating must be below than 10"],
-    // },
-    // rating: {
-    //   //***ทำเป็น ตาราง แยกไว้*/
-    //   type: Number,
-    //   required: [true, "rating must have rating"],
-    //   min: [1, "Rating must be greater than 1"],
-    //   max: [10, "Rating must be below than 10"],
-    // },
-    // location: {
-    //   //***ทำเป็น ตาราง แยกไว้*/
-    //   type: String,
-    //   required: [true, "Hotel must have location"],
-    //   enum: {
-    //     values: thaiProvinces,
-    //     message: "Location must be Thailand province",
-    //   },
-    // },
-    // property: {
-    //   //***ทำเป็น ตาราง แยกไว้*/
-    //   type: String,
-    //   required: [true, "Hotel must have property type"],
-    // },
-
-    // facilities: [
-    //   //***ทำเป็น ตาราง แยกไว้*/
-    //   {
-    //     type: String,
-    //   },
-    // ],
+    ownerProperty: {
+      type: Types.ObjectId,
+      ref: "User",
+      required: [true, "Hotel must has the owner"],
+    },
+    guestsQuantity: {
+      type: Number,
+      required: [true, "Hotel must specify amount of guests"],
+    },
+    bedsQuantity: {
+      type: Number,
+      required: [true, "Hotel must specify amount of beds"],
+    },
   },
   { strictQuery: true, toJSON: { virtuals: true }, id: false }
 );
+
+hotelSchema.index({ location: "2dsphere" });
 hotelSchema.pre("save", function (next) {
-  this.slug = slugify(this.name, { lower: true });
+  if (this.name) {
+    this.slug = slugify(this.name, { lower: true });
+  }
   next();
 });
 // hotelSchema.virtual("priceInUsDollar").get(function () {

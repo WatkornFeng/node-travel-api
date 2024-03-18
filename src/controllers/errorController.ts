@@ -13,7 +13,9 @@ const handleCastErrorDB = (err: mongoose.Error.CastError) => {
 };
 const handleDuplicateFieldsDB = (err: any) => {
   const value = err.keyValue.name;
-  const message = `Duplicate field value ${value}. Please use another value`;
+  const message = `Duplicate field value ${
+    value ? value : ""
+  }. Please use another value`;
   return new AppError(message, 400, "fail");
 };
 const handleValidationErrorDB = (err: mongoose.Error.ValidationError) => {
@@ -66,7 +68,6 @@ function globalErrorHandler(
   next: NextFunction
 ) {
   if (process.env.NODE_ENV === "production") {
-    // let error: Error = Object.assign(err);
     let error: AppError = Object.assign(err);
 
     if (error instanceof mongoose.Error.CastError)

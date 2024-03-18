@@ -82,7 +82,7 @@ reviewSchema.statics.calcAverageRatings = async function (
   }
   // console.log(stats);
 };
-
+reviewSchema.index({ hotel: 1, user: 1 }, { unique: true });
 reviewSchema.post("save", function () {
   (this.constructor as ReviewModel).calcAverageRatings((this as IReview).hotel);
 });

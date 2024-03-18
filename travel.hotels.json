@@ -1,0 +1,198 @@
+[
+  {
+    "_id": {
+      "$oid": "65d23be32149b18eee47ba32"
+    },
+    "name": "Serenity Springs Inn",
+    "rating": 8.5,
+    "price": 4600,
+    "facilities": ["wifi", "pool"],
+    "location": {
+      "$oid": "65edc6dc71b51d4ad1741957"
+    },
+    "star": 5,
+    "property": "Hotel",
+    "slug": "Serenity-Springs-Inn",
+    "image": [
+      "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg",
+      "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935083/jrfe5uo0tnwnbdtfwno2.jpg",
+      "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935083/jrfe5uo0tnwnbdtfwno2.jpg"
+    ]
+  },
+  {
+    "_id": {
+      "$oid": "65d23be32149b18eee47ba33"
+    },
+    "name": "Azure Horizon Resort",
+    "rating": 6,
+    "price": 3012,
+    "facilities": ["Free Wifi", "Gym", "Pool table"],
+    "location": "Bangkok",
+    "star": 5,
+    "property": "Hotel",
+    "slug": "Azure-Horizon-Resort",
+    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935083/jrfe5uo0tnwnbdtfwno2.jpg"
+  },
+  {
+    "_id": {
+      "$oid": "65d23be32149b18eee47ba34"
+    },
+    "name": "Harmony Haven Hotel",
+    "rating": 8,
+    "price": 789,
+    "facilities": ["wifi", "pool", "Breakfast"],
+    "location": "Bangkok",
+    "star": 3,
+    "property": "Hotel",
+    "slug": "Harmony-Haven-Hotel",
+    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
+  },
+  {
+    "_id": {
+      "$oid": "65d23be32149b18eee47ba35"
+    },
+    "name": "Tranquil Oasis Lodge",
+    "rating": 7.7,
+    "price": 2999,
+    "facilities": ["wifi", "pool", "breakfast"],
+    "location": "Bangkok",
+    "star": 4,
+    "property": "B&B",
+    "slug": "Tranquil-Oasis-Lodge",
+    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
+  },
+  {
+    "_id": {
+      "$oid": "65d23be32149b18eee47ba36"
+    },
+    "name": "Majestic Peaks Inn",
+    "rating": 8.1,
+    "price": 2500,
+    "facilities": ["Free Wifi", "Gym", "Pool table", "Breakfast"],
+    "location": "Bangkok",
+    "star": 5,
+    "property": "Hostel",
+    "slug": "Majestic-Peaks-Inn",
+    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
+  },
+  {
+    "_id": {
+      "$oid": "65d23be32149b18eee47ba37"
+    },
+    "name": "Emerald Cove Retreat",
+    "rating": 8,
+    "price": 3500,
+    "facilities": ["Free Wifi", "Pool table", "Breakfast"],
+    "location": "Bangkok",
+    "star": 4,
+    "property": "Hotel",
+    "slug": "Emerald-Cove-Retreat",
+    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935083/jrfe5uo0tnwnbdtfwno2.jpg"
+  },
+  {
+    "_id": {
+      "$oid": "65d23be32149b18eee47ba38"
+    },
+    "name": "Sunset Vista Hotel",
+    "rating": 8.5,
+    "price": 4600,
+    "facilities": ["wifi", "pool"],
+    "location": "Buriram",
+    "star": 5,
+    "property": "Hostel",
+    "slug": "Sunset-Vista-Hotel",
+    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
+  },
+  {
+    "_id": {
+      "$oid": "65d23be32149b18eee47ba39"
+    },
+    "name": "Whispering Pines Retreat",
+    "rating": 6,
+    "price": 3012,
+    "facilities": ["Free Wifi", "Gym", "Pool table"],
+    "location": "Buriram",
+    "star": 5,
+    "property": "Hotel",
+    "slug": "Whispering-Pines-Retreat",
+    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
+  },
+  {
+    "_id": {
+      "$oid": "65d23be32149b18eee47ba3a"
+    },
+    "name": "Enchanted Garden Inn",
+    "rating": 8,
+    "price": 789,
+    "facilities": ["wifi", "pool", "Breakfast"],
+    "location": "Buriram",
+    "star": 3,
+    "property": "Hotel",
+    "slug": "Enchanted-Garden-Inn",
+    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
+  },
+  {
+    "_id": {
+      "$oid": "65d23be32149b18eee47ba3b"
+    },
+    "name": "Coastal Breeze Resort ",
+    "rating": 7.7,
+    "price": 2999,
+    "facilities": ["wifi", "pool", "breakfast"],
+    "location": "Buriram",
+    "star": 4,
+    "property": "B&B",
+    "slug": "Coastal-Breeze-Resort",
+    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
+  },
+  {
+    "_id": {
+      "$oid": "65d23be32149b18eee47ba3c"
+    },
+    "name": "Sunset Terrace Apartments",
+    "rating": 8.1,
+    "price": 2500,
+    "facilities": ["Free Wifi", "Gym", "Pool table", "Breakfast"],
+    "location": "Buriram",
+    "star": 5,
+    "property": "Hostel",
+    "slug": "Sunset-Terrace-Apartments",
+    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935083/jrfe5uo0tnwnbdtfwno2.jpg"
+  },
+  {
+    "_id": {
+      "$oid": "65d23be32149b18eee47ba3d"
+    },
+    "name": "Maplewood Heights Residences",
+    "rating": 8,
+    "price": 3500,
+    "facilities": ["Free Wifi", "Pool table", "Breakfast"],
+    "location": "Buriram",
+    "star": 4,
+    "property": "Hostel",
+    "slug": "aplewood-Heights-Residences",
+    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
+  },
+  {
+    "_id": {
+      "$oid": "65eebcbf3af573a7d0656878"
+    },
+    "name": "test test",
+    "description": "a",
+    "image": [
+      "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935083/jrfe5uo0tnwnbdtfwno2.jpg"
+    ],
+    "star": 3,
+    "rating": 4.7,
+    "price": 500,
+    "property": "Hotel",
+    "province": {
+      "$oid": "65edc6dc71b51d4ad1741957"
+    },
+    "facilities": ["wifi", "pool"],
+    "slug": "test-test",
+    "__v": 0,
+    "ratingsAverage": 4.7,
+    "ratingsQuantity": 3
+  }
+]

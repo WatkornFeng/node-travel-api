@@ -5,6 +5,8 @@ import Hotel from "../models/hotelModel";
 import { AppError } from "../utils/AppError";
 import sharp from "sharp";
 import mongoose from "mongoose";
+import { getLocationFromLatLng } from "../utils/getLocation";
+import Province from "../models/provinceModel";
 
 export const getAllHotels = async (
   req: Request,
@@ -164,12 +166,63 @@ export const createHotel = async (
   next: NextFunction
 ) => {
   try {
-    const newHotel = await Hotel.create(req.body);
+    // console.log(req.files);
+
+    const ownerProperty = "65ec98feabff0b42e8e7c84a";
+    const {
+      propertyName: name,
+      propertyDescription: description,
+      propertyPrice: price,
+      lnglat: coordinates,
+      propertyAmenities: amenities,
+      propertyStars: stars,
+      propertyType,
+      guests,
+      beds,
+    } = req.body;
+
+    const [lng, lat] = JSON.parse(coordinates);
+    // const lat = 37.09024;
+    // const lng = -95.712891;
+
+    const {
+      address: { country_code, state },
+    } = await getLocationFromLatLng(lat, lng);
+    // console.log("lat", lat, "lng", lng);
+
+    if (country_code !== "th") {
+      return next(
+        new AppError("Please select location in Thailand", 400, "fail")
+      );
+    }
+    // state = "Nonthaburi Province"
+    const province = state.replace("Province", "").trim();
+
+    const provinceId = await Province.findOne({ name: province }).select("_id");
+    // console.log("amen", amenities);
+    // console.log(country_code);
+    // console.log(state);
+
+    const newHotel = await Hotel.create({
+      name,
+      description,
+      price: JSON.parse(price),
+      location: { coordinates: [lng, lat] },
+      stars: JSON.parse(stars),
+      guestsQuantity: JSON.parse(guests),
+      bedsQuantity: JSON.parse(beds),
+      province: provinceId,
+      ownerProperty,
+      propertyType,
+      amenities,
+      // images,
+    });
+
     res.status(200).json({
       status: "success",
-      data: {
-        hotel: newHotel,
-      },
+      // data: {
+      //   hotel: newHotel,
+      // },
     });
   } catch (err) {
     next(err);
@@ -261,5 +314,57 @@ export const updateHotel = async (req: Request, res: Response) => {
       status: "fail",
       message: "Invalid data sent!",
     });
+  }
+};
+export const getHotelWithin = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { distance, latlng, unit } = req.params;
+    const [lat, lng] = latlng.split(",");
+    if (!lat || !lng) {
+      return next(new AppError("Please provide lat,lng", 400, "fail"));
+    }
+    const radius = unit === "mi" ? +distance / 3963.2 : +distance / 6378.1;
+
+    console.log(distance, lat, lng, unit);
+    const hotels = await Hotel.find({
+      location: { $geoWithin: { $centerSphere: [[lng, lat], radius] } },
+    });
+
+    res.status(200).json({
+      status: "success",
+      results: hotels.length,
+      data: {
+        hotels,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const createNewHotel = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    //temp data
+    req.body.user = "65d0d5639e5e821d43f476b7";
+    const userId = req.body.user;
+    console.log(req.body.user);
+    const newHotel = await Hotel.create({
+      ownerProperty: userId,
+    });
+
+    console.log(newHotel);
+    res.status(200).json({
+      status: "success",
+    });
+  } catch (err) {
+    next(err);
   }
 };

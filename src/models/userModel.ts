@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Types } from "mongoose";
 import validator from "validator";
 const userSchema = new mongoose.Schema({
   email: {
@@ -19,6 +19,11 @@ const userSchema = new mongoose.Schema({
     type: String,
     maxlength: 2,
   },
+  property: {
+    type: Types.ObjectId,
+    ref: "Hotel",
+  },
+  // roles ?
   // favorites:{
   //   type
   // }

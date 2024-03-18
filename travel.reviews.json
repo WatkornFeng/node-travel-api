@@ -1,0 +1,51 @@
+[{
+  "_id": {
+    "$oid": "65f31f55f792d510f1769fa4"
+  },
+  "hotel": {
+    "$oid": "65eebcbf3af573a7d0656878"
+  },
+  "user": {
+    "$oid": "65d22cca46cf66b55e93768b"
+  },
+  "rating": 10,
+  "comment": "The bbseest",
+  "createdAt": {
+    "$date": "2024-03-14T16:01:25.661Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65f31f98f792d510f1769fac"
+  },
+  "hotel": {
+    "$oid": "65eebcbf3af573a7d0656878"
+  },
+  "user": {
+    "$oid": "65d0d5639e5e821d43f476b7"
+  },
+  "rating": 2,
+  "comment": "The bbseest",
+  "createdAt": {
+    "$date": "2024-03-14T16:02:32.605Z"
+  },
+  "__v": 0
+},
+{
+  "_id": {
+    "$oid": "65f31fd6f792d510f1769fb6"
+  },
+  "hotel": {
+    "$oid": "65eebcbf3af573a7d0656878"
+  },
+  "user": {
+    "$oid": "65ec98feabff0b42e8e7c84a"
+  },
+  "rating": 2,
+  "comment": "The bbseest",
+  "createdAt": {
+    "$date": "2024-03-14T16:03:34.431Z"
+  },
+  "__v": 0
+}]

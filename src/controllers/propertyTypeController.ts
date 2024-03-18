@@ -10,17 +10,23 @@ export const getAllPropertyType = async (
 ) => {
   try {
     // console.log("x");
-    const types = await PropertyType.find().select("-_id");
+    const types = await PropertyType.find().select("-__v");
 
     if (!types.length)
       return next(new AppError("No amenities were found", 404, "fail"));
-    res.status(200).json({
-      status: "success",
-      results: types.length,
-      data: {
-        types,
-      },
-    });
+
+    // Delay FOR Test purpose
+    const delayTime = 1000;
+
+    setTimeout(() => {
+      res.status(200).json({
+        status: "success",
+        results: types.length,
+        data: {
+          types,
+        },
+      });
+    }, delayTime);
   } catch (error) {
     next(error);
   }

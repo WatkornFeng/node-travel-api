@@ -10,17 +10,21 @@ export const getAllAmenity = async (
   next: NextFunction
 ) => {
   try {
-    const amenities = await Amenity.find().select("-_id");
+    const amenities = await Amenity.find().select("-__V");
     if (!amenities.length)
       return next(new AppError("No amenities were found", 404, "fail"));
+    // Delay FOR Test purpose
+    const delayTime = 1000;
 
-    res.status(200).json({
-      status: "success",
-      results: amenities.length,
-      data: {
-        amenities,
-      },
-    });
+    setTimeout(() => {
+      res.status(200).json({
+        status: "success",
+        results: amenities.length,
+        data: {
+          amenities,
+        },
+      });
+    }, delayTime);
   } catch (error) {
     next(error);
   }
