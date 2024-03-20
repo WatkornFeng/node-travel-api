@@ -70,9 +70,10 @@ interface IUploadImageResult {
     secure_url: string;
     public_id: string;
   };
+  err: Error;
 }
 
-const uploadImage = async (imagePath: string[]) => {
+const uploadProvinceImage = async (imagePath: string[]) => {
   const options = {
     use_filename: true,
     folder: "Provinces",
@@ -96,7 +97,7 @@ const uploadImage = async (imagePath: string[]) => {
   }
 };
 
-export const uploadImageProvinces = async (
+export const uploadProvinceImageToDB = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -112,8 +113,11 @@ export const uploadImageProvinces = async (
     const {
       picture: { secure_url: pictureUrl, public_id: pictureId },
       pictureCover: { secure_url: coverUrl, public_id: coverId },
-    } = (await uploadImage(arrayOfDataURL)) as IUploadImageResult;
-
+      err,
+    } = (await uploadProvinceImage(arrayOfDataURL)) as IUploadImageResult;
+    if (err) {
+      return next(new AppError("upload images to Cloud Error", 500, "fail"));
+    }
     const province = await Province.create({
       name: provinceName,
       picture: { url: pictureUrl, cloudinary_id: pictureId },

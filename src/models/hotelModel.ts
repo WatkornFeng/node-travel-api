@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { ObjectId } from "mongoose";
 import slugify from "slug";
 import { thaiProvinces } from "../utils/dataForValidation";
 import {
@@ -63,8 +63,14 @@ const hotelSchema = new mongoose.Schema(
     slug: String,
     images: [
       {
-        type: String,
-        // required: true,
+        url: {
+          type: "string",
+          required: [true, "Hotel's images must have picture's url"],
+        },
+        cloudinary_id: {
+          type: "string",
+          required: [true, "Hotel's images must have cloundinary id"],
+        },
       },
     ],
     stars: {
@@ -98,12 +104,13 @@ const hotelSchema = new mongoose.Schema(
     province: {
       type: Types.ObjectId,
       ref: "Province",
-      // required: [true, "Hotel must have province"],
+      required: [true, "Hotel must have province"],
     },
     ownerProperty: {
       type: Types.ObjectId,
       ref: "User",
       required: [true, "Hotel must has the owner"],
+      unique: [true, "1 user can have 1 hotel"],
     },
     guestsQuantity: {
       type: Number,

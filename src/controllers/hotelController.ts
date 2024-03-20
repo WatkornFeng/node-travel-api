@@ -4,9 +4,11 @@ import multer from "multer";
 import Hotel from "../models/hotelModel";
 import { AppError } from "../utils/AppError";
 import sharp from "sharp";
-import mongoose from "mongoose";
+
 import { getLocationFromLatLng } from "../utils/getLocation";
 import Province from "../models/provinceModel";
+import { Types } from "mongoose";
+import { DATA_URL_IMAGE_SCHEMA } from "./constant";
 
 export const getAllHotels = async (
   req: Request,
@@ -136,7 +138,12 @@ export const getHotel = async (
     //   path: "province",
     //   select: "-picture -pictureCover -__v",
     // });
-    let query = Hotel.findById(id).populate("reviews");
+    let query = Hotel.findById(id)
+      .populate("reviews")
+      .populate("propertyType")
+      .populate("province")
+      .populate("ownerProperty")
+      .populate("amenities");
 
     const hotel = await query;
 
@@ -166,9 +173,9 @@ export const createHotel = async (
   next: NextFunction
 ) => {
   try {
-    // console.log(req.files);
+    const imagesArrUrl = (req as any).imagesUrl;
 
-    const ownerProperty = "65ec98feabff0b42e8e7c84a";
+    const ownerProperty = "65d0d5639e5e821d43f476b7";
     const {
       propertyName: name,
       propertyDescription: description,
@@ -181,15 +188,16 @@ export const createHotel = async (
       beds,
     } = req.body;
 
+    if (!coordinates) {
+      return next(new AppError("Hotel must have location", 404, "fail"));
+    }
     const [lng, lat] = JSON.parse(coordinates);
     // const lat = 37.09024;
     // const lng = -95.712891;
-
     const {
       address: { country_code, state },
     } = await getLocationFromLatLng(lat, lng);
     // console.log("lat", lat, "lng", lng);
-
     if (country_code !== "th") {
       return next(
         new AppError("Please select location in Thailand", 400, "fail")
@@ -197,10 +205,16 @@ export const createHotel = async (
     }
     // state = "Nonthaburi Province"
     const province = state.replace("Province", "").trim();
-
     const provinceId = await Province.findOne({ name: province }).select("_id");
-    // console.log("amen", amenities);
+
+    let amenityObjectIds;
+    if (amenities) {
+      const amenityIds = JSON.parse(amenities);
+      amenityObjectIds = amenityIds.map((id: string) => new Types.ObjectId(id));
+    }
+
     // console.log(country_code);
+    // console.log(amenityObjectIds);
     // console.log(state);
 
     const newHotel = await Hotel.create({
@@ -214,83 +228,118 @@ export const createHotel = async (
       province: provinceId,
       ownerProperty,
       propertyType,
-      amenities,
-      // images,
+      amenities: amenityObjectIds,
+      images: imagesArrUrl,
     });
 
     res.status(200).json({
       status: "success",
-      // data: {
-      //   hotel: newHotel,
-      // },
+      data: {
+        hotel: newHotel,
+      },
     });
   } catch (err) {
     next(err);
   }
 };
-const uploadImage = async (imagePath: string) => {
+interface IImageUrl {
+  url: string;
+  cloudinary_id: string;
+}
+const uploadHotelImages = async (imagePath: string[]): Promise<IImageUrl[]> => {
   // Use the uploaded file's name as the asset's public ID and
   // allow overwriting the asset with new versions
   const options = {
     use_filename: true,
-    // unique_filename: true,
-    folder: "Provinces",
-    tags: ["Province"],
+    folder: "Hotels",
+    tags: ["Hotel"],
     overwrite: true,
   };
 
-  try {
-    // Upload the image
-    const result = await cloudinary.uploader.upload(imagePath, options);
-    // console.log(result);
-    return result.public_id;
-  } catch (error) {
-    console.error(error);
+  let arrayResult = [];
+  for (const image of imagePath) {
+    const { secure_url, public_id } = await cloudinary.uploader.upload(
+      image,
+      options
+    );
+    arrayResult.push({ url: secure_url, cloudinary_id: public_id });
   }
+  return arrayResult;
 };
-
-export const resizeImageHotel = async (
+const resizeImage = async (File: Buffer) => {
+  return await sharp(File)
+    .resize(350, 350)
+    .toFormat("jpeg")
+    .jpeg({ quality: 90 })
+    .toBuffer();
+};
+export const resizeHotelImages = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
-  // console.log(req.file);
-  if (!req.file) return next(new AppError("Please select file", 400, "fail"));
+  const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+
+  if (!files || Object.keys(files).length === 0)
+    return next(
+      new AppError("Please select images for your hotel ", 400, "fail")
+    );
+  if (files && files["pictures"].length < 5)
+    return next(
+      new AppError(
+        "Please select at least 5 images for your hotel ",
+        400,
+        "fail"
+      )
+    );
+
   try {
-    const resizeImageBuffer = await sharp(req.file.buffer)
-      .resize(350, 350)
-      .toFormat("jpeg")
-      .jpeg({ quality: 90 })
-      .toBuffer();
+    const fileImages = files["pictures"];
+    const resizeImagesBuffer = await Promise.all(
+      fileImages.map(async (file) => await resizeImage(file.buffer))
+    );
 
-    req.file.buffer = resizeImageBuffer;
-
+    (req as any).resizedImagesBuffer = resizeImagesBuffer;
     next();
   } catch (error) {
     next(error);
   }
 };
-
-export const uploadImageHotel = async (
+export const uploadHotelImagesToCloud = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const b64 = Buffer.from(req.file!.buffer).toString("base64");
-    let dataURI = "data:" + req.file!.mimetype + ";base64," + b64;
-    // console.log(dataURI);
-    // upload to Cloudinary
-    const results = await uploadImage(dataURI);
-    // console.log(results);
+    const imagesBase64Url = ((req as any).resizedImagesBuffer as Buffer[]).map(
+      (buffer) => Buffer.from(buffer).toString("base64")
+    );
+    const imagesUrlString = imagesBase64Url.map(
+      (img) => DATA_URL_IMAGE_SCHEMA + img
+    );
+    const results = await uploadHotelImages(imagesUrlString);
 
-    res.status(200).json({
-      status: "success",
-    });
-  } catch (error) {
-    next(error);
+    (req as any).imagesUrl = results;
+    next();
+  } catch (err) {
+    next(err);
   }
 };
+// export const uploadIHotelImagesToDB = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//   const imagesArrUrl = (req as any).imagesUrl
+
+//     res.status(200).json({
+//       status: "success",
+//     });
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 
 export const updateHotel = async (req: Request, res: Response) => {
   try {
@@ -346,25 +395,26 @@ export const getHotelWithin = async (
   }
 };
 
-export const createNewHotel = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    //temp data
-    req.body.user = "65d0d5639e5e821d43f476b7";
-    const userId = req.body.user;
-    console.log(req.body.user);
-    const newHotel = await Hotel.create({
-      ownerProperty: userId,
-    });
+// export const createNewHotel = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     //temp data
+//     req.body.user = "65d0d5639e5e821d43f476b7";
+//     const userId = req.body.user;
+//     console.log(req.body.user);
 
-    console.log(newHotel);
-    res.status(200).json({
-      status: "success",
-    });
-  } catch (err) {
-    next(err);
-  }
-};
+//     const newHotel = await Hotel.create({
+//       ownerProperty: userId,
+//     });
+
+//     console.log(newHotel);
+//     res.status(200).json({
+//       status: "success",
+//     });
+//   } catch (err) {
+//     next(err);
+//   }
+// };

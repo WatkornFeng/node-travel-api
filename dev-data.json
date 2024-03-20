@@ -1,412 +1,54 @@
 [
   {
     "_id": {
-      "$oid": "65d23be32149b18eee47ba32"
+      "$oid": "65f96498eeb03ea26242fc1d"
     },
-    "name": "Serenity Springs Inn",
-    "description": "The luxurious hotel nestled in the heart of the city offers unparalleled elegance and comfort. With breathtaking views of the skyline and world-class amenities, it's the perfect destination for discerning travelers seeking an unforgettable experience.",
+    "name": "a",
+    "description": "d",
+    "location": {
+      "coordinates": [101.5411376953125, 13.529020106121258],
+      "type": "Point"
+    },
+    "images": [],
+    "stars": 5,
     "ratingsAverage": 0,
     "ratingsQuantity": 0,
-    "price": 4600,
-    "location": {
-      "type": "Point",
-      "coordinates": [100.523186, 13.4586]
-    },
+    "price": 750,
     "amenities": [
       {
         "$oid": "65f01f25371e8dd12afa56f0"
       },
       {
         "$oid": "65f01f5988f5cbe0ede06ec4"
-      }
-    ],
-    "province": {
-      "$oid": "65edc6dc71b51d4ad1741957"
-    },
-    "star": 5,
-    "propertyType": {
-      "$oid": "65f02c51bc8150971c9bb7cb"
-    },
-    "slug": "Serenity-Springs-Inn",
-    "image": [
-      "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
-    ]
-  },
-  {
-    "_id": {
-      "$oid": "65d23be32149b18eee47ba33"
-    },
-    "name": "Azure Horizon Resort",
-    "description": "The luxurious hotel nestled in the heart of the city offers unparalleled elegance and comfort. With breathtaking views of the skyline and world-class amenities, it's the perfect destination for discerning travelers seeking an unforgettable experience.",
-    "ratingsAverage": 0,
-    "ratingsQuantity": 0,
-    "price": 3012,
-    "location": {
-      "type": "Point",
-      "coordinates": [100.523186, 13.4586]
-    },
-    "amenities": [
-      {
-        "$oid": "65f01f25371e8dd12afa56f0"
       },
       {
-        "$oid": "65f01f5988f5cbe0ede06ec4"
-      }
-    ],
-    "province": {
-      "$oid": "65edc6dc71b51d4ad1741957"
-    },
-    "star": 5,
-    "propertyType": {
-      "$oid": "65f02c51bc8150971c9bb7cb"
-    },
-    "slug": "Azure-Horizon-Resort",
-    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935083/jrfe5uo0tnwnbdtfwno2.jpg"
-  },
-  {
-    "_id": {
-      "$oid": "65d23be32149b18eee47ba34"
-    },
-    "name": "Harmony Haven Hotel",
-    "description": "The luxurious hotel nestled in the heart of the city offers unparalleled elegance and comfort. With breathtaking views of the skyline and world-class amenities, it's the perfect destination for discerning travelers seeking an unforgettable experience.",
-    "ratingsAverage": 0,
-    "ratingsQuantity": 0,
-    "price": 789,
-    "location": {
-      "type": "Point",
-      "coordinates": [100.523186, 13.4586]
-    },
-    "amenities": [
-      {
-        "$oid": "65f01f25371e8dd12afa56f0"
+        "$oid": "65f01f73facb6185c0f97269"
       },
       {
-        "$oid": "65f01f5988f5cbe0ede06ec4"
-      }
-    ],
-    "province": {
-      "$oid": "65edc6dc71b51d4ad1741957"
-    },
-    "star": 3,
-    "propertyType": {
-      "$oid": "65f02c51bc8150971c9bb7cb"
-    },
-    "slug": "Harmony-Haven-Hotel",
-    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
-  },
-  {
-    "_id": {
-      "$oid": "65d23be32149b18eee47ba35"
-    },
-    "name": "Tranquil Oasis Lodge",
-    "description": "The luxurious hotel nestled in the heart of the city offers unparalleled elegance and comfort. With breathtaking views of the skyline and world-class amenities, it's the perfect destination for discerning travelers seeking an unforgettable experience.",
-    "ratingsAverage": 0,
-    "ratingsQuantity": 0,
-    "price": 2999,
-    "location": {
-      "type": "Point",
-      "coordinates": [100.523186, 13.4586]
-    },
-    "amenities": [
-      {
-        "$oid": "65f01f25371e8dd12afa56f0"
+        "$oid": "65f01f8d7279ae8e9e5b3070"
       },
       {
-        "$oid": "65f01f5988f5cbe0ede06ec4"
-      }
-    ],
-    "province": {
-      "$oid": "65edc6dc71b51d4ad1741957"
-    },
-    "star": 4,
-    "propertyType": {
-      "$oid": "65f02c51bc8150971c9bb7cb"
-    },
-    "slug": "Tranquil-Oasis-Lodge",
-    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
-  },
-  {
-    "_id": {
-      "$oid": "65d23be32149b18eee47ba36"
-    },
-    "name": "Majestic Peaks Inn",
-    "description": "The luxurious hotel nestled in the heart of the city offers unparalleled elegance and comfort. With breathtaking views of the skyline and world-class amenities, it's the perfect destination for discerning travelers seeking an unforgettable experience.",
-    "ratingsAverage": 0,
-    "ratingsQuantity": 0,
-    "price": 2500,
-    "location": {
-      "type": "Point",
-      "coordinates": [100.523186, 13.4586]
-    },
-    "amenities": [
-      {
-        "$oid": "65f01f25371e8dd12afa56f0"
+        "$oid": "65f01fa4bf9a8294692e9db7"
       },
       {
-        "$oid": "65f01f5988f5cbe0ede06ec4"
-      }
-    ],
-    "province": {
-      "$oid": "65edc6dc71b51d4ad1741957"
-    },
-    "star": 5,
-    "propertyType": {
-      "$oid": "65f02c51bc8150971c9bb7cb"
-    },
-    "slug": "Majestic-Peaks-Inn",
-    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
-  },
-  {
-    "_id": {
-      "$oid": "65d23be32149b18eee47ba37"
-    },
-    "name": "Emerald Cove Retreat",
-    "description": "The luxurious hotel nestled in the heart of the city offers unparalleled elegance and comfort. With breathtaking views of the skyline and world-class amenities, it's the perfect destination for discerning travelers seeking an unforgettable experience.",
-    "ratingsAverage": 0,
-    "ratingsQuantity": 0,
-    "price": 3500,
-    "location": {
-      "type": "Point",
-      "coordinates": [100.523186, 13.4586]
-    },
-    "amenities": [
-      {
-        "$oid": "65f01f25371e8dd12afa56f0"
+        "$oid": "65f01fbc0448f99dbf87a1b7"
       },
       {
-        "$oid": "65f01f5988f5cbe0ede06ec4"
+        "$oid": "65f01fd6cabf5f071c9a64b6"
       }
     ],
-    "province": {
-      "$oid": "65edc6dc71b51d4ad1741957"
-    },
-    "star": 4,
     "propertyType": {
-      "$oid": "65f02c51bc8150971c9bb7cb"
-    },
-    "slug": "Emerald-Cove-Retreat",
-    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935083/jrfe5uo0tnwnbdtfwno2.jpg"
-  },
-  {
-    "_id": {
-      "$oid": "65d23be32149b18eee47ba38"
-    },
-    "name": "Sunset Vista Hotel",
-    "description": "The luxurious hotel nestled in the heart of the city offers unparalleled elegance and comfort. With breathtaking views of the skyline and world-class amenities, it's the perfect destination for discerning travelers seeking an unforgettable experience.",
-    "ratingsAverage": 0,
-    "ratingsQuantity": 0,
-    "price": 4600,
-    "location": {
-      "type": "Point",
-      "coordinates": [100.523186, 13.4586]
-    },
-    "amenities": [
-      {
-        "$oid": "65f01f25371e8dd12afa56f0"
-      },
-      {
-        "$oid": "65f01f5988f5cbe0ede06ec4"
-      }
-    ],
-    "province": {
-      "$oid": "65edd90df33a59437ba9d379"
-    },
-    "star": 5,
-    "propertyType": {
-      "$oid": "65f02c51bc8150971c9bb7cb"
-    },
-    "slug": "Sunset-Vista-Hotel",
-    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
-  },
-  {
-    "_id": {
-      "$oid": "65d23be32149b18eee47ba39"
-    },
-    "name": "Whispering Pines Retreat",
-    "description": "The luxurious hotel nestled in the heart of the city offers unparalleled elegance and comfort. With breathtaking views of the skyline and world-class amenities, it's the perfect destination for discerning travelers seeking an unforgettable experience.",
-    "ratingsAverage": 0,
-    "ratingsQuantity": 0,
-    "price": 3012,
-    "location": {
-      "type": "Point",
-      "coordinates": [100.523186, 13.4586]
-    },
-    "amenities": [
-      {
-        "$oid": "65f01f25371e8dd12afa56f0"
-      },
-      {
-        "$oid": "65f01f5988f5cbe0ede06ec4"
-      }
-    ],
-    "province": {
-      "$oid": "65edd90df33a59437ba9d379"
-    },
-    "star": 5,
-    "propertyType": {
-      "$oid": "65f02c51bc8150971c9bb7cb"
-    },
-    "slug": "Whispering-Pines-Retreat",
-    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
-  },
-  {
-    "_id": {
-      "$oid": "65d23be32149b18eee47ba3a"
-    },
-    "name": "Enchanted Garden Inn",
-    "description": "The luxurious hotel nestled in the heart of the city offers unparalleled elegance and comfort. With breathtaking views of the skyline and world-class amenities, it's the perfect destination for discerning travelers seeking an unforgettable experience.",
-    "ratingsAverage": 0,
-    "ratingsQuantity": 0,
-    "price": 789,
-    "location": {
-      "type": "Point",
-      "coordinates": [100.523186, 13.4586]
-    },
-    "amenities": [
-      {
-        "$oid": "65f01f25371e8dd12afa56f0"
-      },
-      {
-        "$oid": "65f01f5988f5cbe0ede06ec4"
-      }
-    ],
-    "province": {
-      "$oid": "65edd90df33a59437ba9d379"
-    },
-    "star": 3,
-    "propertyType": {
-      "$oid": "65f02c51bc8150971c9bb7cb"
-    },
-    "slug": "Enchanted-Garden-Inn",
-    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
-  },
-  {
-    "_id": {
-      "$oid": "65d23be32149b18eee47ba3b"
-    },
-    "name": "Coastal Breeze Resort ",
-    "description": "The luxurious hotel nestled in the heart of the city offers unparalleled elegance and comfort. With breathtaking views of the skyline and world-class amenities, it's the perfect destination for discerning travelers seeking an unforgettable experience.",
-    "ratingsAverage": 0,
-    "ratingsQuantity": 0,
-    "price": 2999,
-    "location": {
-      "type": "Point",
-      "coordinates": [100.523186, 13.4586]
-    },
-    "amenities": [
-      {
-        "$oid": "65f01f25371e8dd12afa56f0"
-      },
-      {
-        "$oid": "65f01f5988f5cbe0ede06ec4"
-      }
-    ],
-    "province": {
-      "$oid": "65edd90df33a59437ba9d379"
-    },
-    "star": 4,
-    "propertyType": {
-      "$oid": "65f02c51bc8150971c9bb7cb"
-    },
-    "slug": "Coastal-Breeze-Resort",
-    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
-  },
-  {
-    "_id": {
-      "$oid": "65d23be32149b18eee47ba3c"
-    },
-    "name": "Sunset Terrace Apartments",
-    "description": "The luxurious hotel nestled in the heart of the city offers unparalleled elegance and comfort. With breathtaking views of the skyline and world-class amenities, it's the perfect destination for discerning travelers seeking an unforgettable experience.",
-    "ratingsAverage": 0,
-    "ratingsQuantity": 0,
-    "price": 2500,
-    "location": {
-      "type": "Point",
-      "coordinates": [100.523186, 13.4586]
-    },
-    "amenities": [
-      {
-        "$oid": "65f01f25371e8dd12afa56f0"
-      },
-      {
-        "$oid": "65f01f5988f5cbe0ede06ec4"
-      }
-    ],
-    "province": {
-      "$oid": "65edd90df33a59437ba9d379"
-    },
-    "star": 5,
-    "propertyType": {
-      "$oid": "65f02c51bc8150971c9bb7cb"
-    },
-    "slug": "Sunset-Terrace-Apartments",
-    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935083/jrfe5uo0tnwnbdtfwno2.jpg"
-  },
-  {
-    "_id": {
-      "$oid": "65d23be32149b18eee47ba3d"
-    },
-    "name": "Maplewood Heights Residences",
-    "description": "The luxurious hotel nestled in the heart of the city offers unparalleled elegance and comfort. With breathtaking views of the skyline and world-class amenities, it's the perfect destination for discerning travelers seeking an unforgettable experience.",
-    "ratingsAverage": 0,
-    "ratingsQuantity": 0,
-    "price": 3500,
-    "location": {
-      "type": "Point",
-      "coordinates": [100.523186, 13.4586]
-    },
-    "amenities": [
-      {
-        "$oid": "65f01f25371e8dd12afa56f0"
-      },
-      {
-        "$oid": "65f01f5988f5cbe0ede06ec4"
-      }
-    ],
-    "province": {
-      "$oid": "65edd90df33a59437ba9d379"
-    },
-    "star": 4,
-    "propertyType": {
-      "$oid": "65f02c51bc8150971c9bb7cb"
-    },
-    "slug": "aplewood-Heights-Residences",
-    "image": "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935098/eq45cqjlduoydihedodx.jpg"
-  },
-  {
-    "_id": {
-      "$oid": "65eebcbf3af573a7d0656878"
-    },
-    "name": "test test",
-
-    "description": "The luxurious hotel nestled in the heart of the city offers unparalleled elegance and comfort. With breathtaking views of the skyline and world-class amenities, it's the perfect destination for discerning travelers seeking an unforgettable experience.",
-    "image": [
-      "https://res.cloudinary.com/dp2atg2zj/image/upload/v1707935083/jrfe5uo0tnwnbdtfwno2.jpg"
-    ],
-    "star": 3,
-
-    "price": 500,
-    "location": {
-      "type": "Point",
-      "coordinates": [100.523186, 13.4586]
-    },
-    "propertyType": {
-      "$oid": "65f02c51bc8150971c9bb7cb"
+      "$oid": "65f02d61b95aad2645fb8053"
     },
     "province": {
-      "$oid": "65edc6dc71b51d4ad1741957"
+      "$oid": "65eddaa12c3fb6ca5c70a9b1"
     },
-    "amenities": [
-      {
-        "$oid": "65f01f25371e8dd12afa56f0"
-      },
-      {
-        "$oid": "65f01f5988f5cbe0ede06ec4"
-      }
-    ],
-    "slug": "test-test",
-    "__v": 0,
-    "ratingsAverage": 4.7,
-    "ratingsQuantity": 3
+    "ownerProperty": {
+      "$oid": "65ec98feabff0b42e8e7c84a"
+    },
+    "guestsQuantity": 2,
+    "bedsQuantity": 2,
+    "slug": "a",
+    "__v": 0
   }
 ]

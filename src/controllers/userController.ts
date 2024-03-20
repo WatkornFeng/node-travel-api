@@ -76,3 +76,29 @@ export const getAllUsers = async (
     next(error);
   }
 };
+
+export const getUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const users = await User.findById(req.params.userId)
+      .select("-__v")
+      .populate({
+        path: "property",
+        select: "-__v",
+        populate: {
+          path: "province propertyType amenities",
+          select: "name",
+        },
+      });
+
+    res.status(200).json({
+      status: "success",
+      users,
+    });
+  } catch (error) {
+    next(error);
+  }
+};

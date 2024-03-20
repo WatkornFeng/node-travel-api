@@ -3,7 +3,7 @@ import { thaiProvinces } from "../utils/dataForValidation";
 const provinceSchema = new mongoose.Schema({
   name: {
     type: "string",
-    require: [true, "Province must have name"],
+    required: [true, "Province must have name"],
     unique: true,
     enum: {
       values: thaiProvinces,
@@ -13,21 +13,21 @@ const provinceSchema = new mongoose.Schema({
   picture: {
     url: {
       type: "string",
-      require: [true, "Picture must have picture's url"],
+      required: [true, "Picture must have picture's url"],
     },
     cloudinary_id: {
       type: "string",
-      require: [true, "Picture must have id"],
+      required: [true, "Picture must have cloundinary id"],
     },
   },
   pictureCover: {
     url: {
       type: "string",
-      require: [true, "PictureCover must have picture's url"],
+      required: [true, "PictureCover must have picture's url"],
     },
     cloudinary_id: {
       type: "string",
-      require: [true, "PictureCover must have id"],
+      required: [true, "PictureCover must have id"],
     },
   },
 });

@@ -18,6 +18,6 @@ const propertyTypeSchema = new mongoose.Schema({
   },
 });
 
-const PropertyType = mongoose.model("propertyType", propertyTypeSchema);
+const PropertyType = mongoose.model("PropertyType", propertyTypeSchema);
 
 export default PropertyType;

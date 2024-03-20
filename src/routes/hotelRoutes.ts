@@ -5,28 +5,36 @@ import {
   getAllHotels,
   updateHotel,
   getHotelStats,
-  uploadImageHotel,
-  resizeImageHotel,
   getHotelWithin,
-  createNewHotel,
+  // createNewHotel,
   createHotel,
+  resizeHotelImages,
+  uploadHotelImagesToCloud,
+  // uploadIHotelImagesToDB,
 } from "../controllers/hotelController";
-import { multerCreateProperty, multerUploadProperty } from "../utils/multer";
+import { multerUploadHotelImages } from "../utils/multer";
 const hotelRouter = express.Router();
 
 hotelRouter.use("/:hotelId/reviews", reviewRouter);
 
 hotelRouter.route("/hotel-stats").get(getHotelStats);
-hotelRouter
-  .route("/upload-image")
-  .post(multerUploadProperty, resizeImageHotel, uploadImageHotel);
+// hotelRouter
+//   .route("/upload-image")
+//   .post(multerUploadProperty, resizeHotelImages, uploadIHotelImagesToDB);
 hotelRouter
   .route("/hotels-within/:distance/center/:latlng/unit/:unit")
   .get(getHotelWithin);
 
 // hotelRouter.route("/become-host").post(createNewHotel);
 
-hotelRouter.route("/").post(multerCreateProperty, createHotel);
+hotelRouter
+  .route("/")
+  .post(
+    multerUploadHotelImages,
+    resizeHotelImages,
+    uploadHotelImagesToCloud,
+    createHotel
+  );
 hotelRouter.route("/:place").get(getAllHotels);
 hotelRouter.route("/:place/:id").get(getHotel).patch(updateHotel);
 
