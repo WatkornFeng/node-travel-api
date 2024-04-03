@@ -29,48 +29,57 @@ export const getAllHotels = async (
      &rooms=1
     
     */
+
+    const reqBody = { ...req.body };
+    const { provinceId } = reqBody;
     const queryObj = { ...req.query };
-    const placeParam = req.params.place;
+    // const placeParam = req.params.provinceId;
     // console.log(queryObj);
     // console.log(placeParam);
+    // console.log(provinceId);
 
     let query = Hotel.find(queryObj);
 
     // query location
-    query = query.where({ location: placeParam });
-    // query star
-    if (queryObj.star) {
-      // console.log(queryObj.star);
-      query = query.where({ star: queryObj.star });
-    }
-    // query property
-    if (queryObj.property) {
-      query = query.where({ property: queryObj.property });
-    }
-    // query rating
-    if (queryObj.rating === "Outstanding") query = query.gte("rating", 9);
-    if (queryObj.rating === "Very Good") query = query.gte("rating", 8);
-    if (queryObj.rating === "Good") query = query.gte("rating", 7);
-    if (queryObj.rating === "Satisfactory") query = query.gte("rating", 6);
-    if (queryObj.rating === "Any") query = query.gte("rating", 0);
+    query = query.where({ province: provinceId });
+    // // query star
+    // if (queryObj.star) {
+    //   // console.log(queryObj.star);
+    //   query = query.where({ star: queryObj.star });
+    // }
+    // // query property
+    // if (queryObj.property) {
+    //   query = query.where({ property: queryObj.property });
+    // }
+    // // query rating
+    // if (queryObj.rating === "Outstanding") query = query.gte("rating", 9);
+    // if (queryObj.rating === "Very Good") query = query.gte("rating", 8);
+    // if (queryObj.rating === "Good") query = query.gte("rating", 7);
+    // if (queryObj.rating === "Satisfactory") query = query.gte("rating", 6);
+    // if (queryObj.rating === "Any") query = query.gte("rating", 0);
 
-    // SORT
-    let sortBy = "price";
-    if (queryObj.sort === "PRICE_LOW_TO_HIGH") {
-      sortBy = "price";
-    } else if (queryObj.sort === "PRICE_HIGH_TO_LOW") {
-      sortBy = "-price";
-    } else if (queryObj.sort === "RATING_HIGH_TO_LOW") {
-      sortBy = "-rating";
-    } else if (queryObj.sort === "RATING_LOW_TO_HIGH") {
-      sortBy = "rating";
-    }
+    // // SORT
+    // let sortBy = "price";
+    // if (queryObj.sort === "PRICE_LOW_TO_HIGH") {
+    //   sortBy = "price";
+    // } else if (queryObj.sort === "PRICE_HIGH_TO_LOW") {
+    //   sortBy = "-price";
+    // } else if (queryObj.sort === "RATING_HIGH_TO_LOW") {
+    //   sortBy = "-rating";
+    // } else if (queryObj.sort === "RATING_LOW_TO_HIGH") {
+    //   sortBy = "rating";
+    // }
     // console.log(sortBy);
     // console.log(query);
-    query = query.sort(sortBy);
+    // query = query.sort(sortBy);
 
-    const hotels = await query.exec();
-
+    const hotels = await query
+      .select(
+        "-__v -propertyType -ownerProperty -guestsQuantity -bedsQuantity -description"
+      )
+      .populate({ path: "province", select: "name -_id" })
+      .populate({ path: "amenities", select: "name -_id svg" });
+    // console.log(hotels);
     // Delay FOR Test purpose
     const delayTime = 500;
 
@@ -88,6 +97,7 @@ export const getAllHotels = async (
     //   status: "Error getting property",
     //   message: err,
     // });
+
     next(err);
   }
 };
@@ -132,18 +142,20 @@ export const getHotel = async (
   next: NextFunction
 ) => {
   try {
-    const { id, place } = req.params;
-
+    const { hotelId } = req.params;
+    // console.log(id);
     // let query = Hotel.findById(id).populate({
     //   path: "province",
     //   select: "-picture -pictureCover -__v",
     // });
-    let query = Hotel.findById(id)
-      .populate("reviews")
-      .populate("propertyType")
-      .populate("province")
-      .populate("ownerProperty")
-      .populate("amenities");
+    let query = Hotel.findById(
+      hotelId,
+      "-images._id -images.id -images.cloudinary_id -__v -slug -province"
+    )
+      .populate({ path: "amenities", select: "name svg -_id" })
+      .populate({ path: "propertyType", select: "name svg -_id" })
+      .populate({ path: "ownerProperty", select: "name locale -_id" })
+      .populate("reviews");
 
     const hotel = await query;
 
@@ -341,23 +353,37 @@ export const uploadHotelImagesToCloud = async (
 //   }
 // };
 
-export const updateHotel = async (req: Request, res: Response) => {
+export const updateHotel = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
+    // console.log(req.params.hotelId);
+    // console.log(req.body);
     const newUpdatedHotel = await Hotel.findByIdAndUpdate(
-      req.params.id,
+      req.params.hotelId,
       req.body,
       {
         new: true,
         runValidators: true,
       }
     );
+    if (!newUpdatedHotel) {
+      return next(new AppError("No hotel found with that ID", 404, "fail"));
+    }
 
-    res.status(200).json({
-      status: "success",
-      data: {
-        hotel: newUpdatedHotel,
-      },
-    });
+    // Delay FOR Test purpose
+    const delayTime = 1000;
+
+    setTimeout(() => {
+      res.status(200).json({
+        status: "success",
+        data: {
+          hotel: newUpdatedHotel,
+        },
+      });
+    }, delayTime);
   } catch (err) {
     res.status(400).json({
       status: "fail",

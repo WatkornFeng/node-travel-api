@@ -35,7 +35,10 @@ hotelRouter
     uploadHotelImagesToCloud,
     createHotel
   );
-hotelRouter.route("/:place").get(getAllHotels);
-hotelRouter.route("/:place/:id").get(getHotel).patch(updateHotel);
+hotelRouter.route("/:hotelId").get(getHotel).patch(updateHotel);
+
+hotelRouter.route("/:provinceId").post(getAllHotels);
+
+// hotelRouter.route("/:place/:id").get(getHotel).patch(updateHotel);
 
 export default hotelRouter;

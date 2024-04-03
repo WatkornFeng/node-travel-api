@@ -1,6 +1,7 @@
 import express from "express";
 import {
   getAllProvinces,
+  getProvince,
   resizeProvincesImage,
   uploadProvinceImageToDB,
 } from "../controllers/provinceController";
@@ -16,5 +17,7 @@ provincecRouter
     resizeProvincesImage,
     uploadProvinceImageToDB
   );
+
+provincecRouter.route("/:provinceId").get(getProvince);
 
 export default provincecRouter;

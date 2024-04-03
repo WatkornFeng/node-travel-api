@@ -90,14 +90,18 @@ export const getUser = async (
         select: "-__v",
         populate: {
           path: "province propertyType amenities",
-          select: "name",
+          // select: "name",
+          select: "-__v -id",
         },
       });
-
-    res.status(200).json({
-      status: "success",
-      users,
-    });
+    // Delay FOR Test purpose
+    const delayTime = 1000;
+    setTimeout(() => {
+      res.status(200).json({
+        status: "success",
+        user: users,
+      });
+    }, delayTime);
   } catch (error) {
     next(error);
   }

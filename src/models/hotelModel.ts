@@ -9,6 +9,7 @@ import {
   Schema,
   Types,
 } from "mongoose";
+import { NextFunction } from "express";
 export interface IHotel extends Document {
   name: string;
   description: string;
@@ -127,7 +128,14 @@ const hotelSchema = new mongoose.Schema(
 hotelSchema.index({ location: "2dsphere" });
 hotelSchema.pre("save", function (next) {
   if (this.name) {
-    this.slug = slugify(this.name, { lower: true });
+    this.slug = slugify(this.name, { lower: true, trim: true });
+  }
+  next();
+});
+hotelSchema.pre(/^find/, function (next) {
+  const update = (this as any).getUpdate();
+  if (update && update.name) {
+    update.slug = slugify(update.name, { lower: true, trim: true });
   }
   next();
 });

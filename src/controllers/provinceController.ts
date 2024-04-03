@@ -16,7 +16,22 @@ declare global {
   }
 }
 export const getAllProvinces = async (req: Request, res: Response) => {
-  const provinces = await Province.find();
+  const provinces = await Province.find({}, "pictureCover.url name");
+  // Delay FOR Test purpose
+  const delayTime = 0;
+  setTimeout(() => {
+    res.status(200).json({
+      status: "success",
+      provinces,
+    });
+  }, delayTime);
+};
+
+export const getProvince = async (req: Request, res: Response) => {
+  const id = req.params.provinceId;
+
+  const provinces = await Province.findById(id);
+
   res.status(200).json({
     status: "success",
     provinces,
