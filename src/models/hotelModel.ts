@@ -136,6 +136,16 @@ hotelSchema.pre(/^find/, function (next) {
   }
   next();
 });
+hotelSchema.pre("findOneAndDelete", async function (next) {
+  const hotelId = this.getQuery()["_id"];
+
+  await Promise.all([
+    mongoose.model("Booking").deleteMany({ hotel: hotelId }),
+    mongoose.model("Favorite").deleteMany({ hotel: hotelId }),
+  ]);
+
+  next();
+});
 
 hotelSchema.virtual("reviews", {
   ref: "Review",

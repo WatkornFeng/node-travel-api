@@ -36,7 +36,7 @@ export const attachUser = async (
 ) => {
   try {
     const email = req.auth?.payload["https://your-app.com/email"] as string;
-
+    console.log("email", email);
     const user = await User.findOne({ email }).select("_id");
 
     if (!user) {
@@ -316,8 +316,7 @@ export const createHotel = async (
   next: NextFunction
 ) => {
   try {
-    const imagesArrUrl = (req as any).imagesUrl;
-
+    const imagesUrlString = (req as any).imagesUrl;
     const ownerProperty = req.userId;
 
     const {
@@ -350,13 +349,33 @@ export const createHotel = async (
     const province = provinceData
       ? provinceData.replace("Province", "").trim()
       : city;
-    const provinceId = await Province.findOne({ name: province }).select("_id");
+    console.log("prvince", province);
+    const normalized = (str: string) => str.replace(/\s+/g, "").toLowerCase();
+    const normalizedProvince = normalized(province);
+    const provinceId = await Province.findOne({
+      $expr: {
+        $eq: [
+          {
+            $toLower: {
+              $replaceAll: { input: "$name", find: " ", replacement: "" },
+            },
+          },
+          normalizedProvince, // Direct exact match after transformation
+        ],
+      },
+    }).select("_id");
+
+    if (!provinceId) {
+      return next(new AppError("Couldn't find your location", 400, "fail"));
+    }
 
     let amenityObjectIds;
     if (amenities) {
       const amenityIds = JSON.parse(amenities);
       amenityObjectIds = amenityIds.map((id: string) => new Types.ObjectId(id));
     }
+
+    const imagesArrUrl = await uploadHotelImages(imagesUrlString);
 
     const newHotel = await Hotel.create({
       name,
@@ -380,7 +399,6 @@ export const createHotel = async (
       },
     });
   } catch (err) {
-    console.log("err");
     next(err);
   }
 };
@@ -398,14 +416,20 @@ const uploadHotelImages = async (imagePath: string[]): Promise<IImageUrl[]> => {
     overwrite: true,
   };
 
-  let arrayResult = [];
+  const arrayResult: IImageUrl[] = [];
+
   for (const image of imagePath) {
-    const { secure_url, public_id } = await cloudinary.uploader.upload(
-      image,
-      options
-    );
-    arrayResult.push({ url: secure_url, cloudinary_id: public_id });
+    try {
+      const { secure_url, public_id } = await cloudinary.uploader.upload(
+        image,
+        options
+      );
+      arrayResult.push({ url: secure_url, cloudinary_id: public_id });
+    } catch (error) {
+      throw new Error(`Failed to upload image: ${image}`);
+    }
   }
+
   return arrayResult;
 };
 const resizeImage = async (File: Buffer) => {
@@ -447,7 +471,7 @@ export const resizeHotelImages = async (
     next(error);
   }
 };
-export const uploadHotelImagesToCloud = async (
+export const imageBufferToString = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -459,9 +483,8 @@ export const uploadHotelImagesToCloud = async (
     const imagesUrlString = imagesBase64Url.map(
       (img) => DATA_URL_IMAGE_SCHEMA + img
     );
-    const results = await uploadHotelImages(imagesUrlString);
 
-    (req as any).imagesUrl = results;
+    (req as any).imagesUrl = imagesUrlString;
     next();
   } catch (err) {
     next(err);

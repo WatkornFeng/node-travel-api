@@ -9,10 +9,10 @@ import {
   getHotelStatsOnUser,
   getHotelWithin,
   getMyHotels,
+  imageBufferToString,
   jwtCheck,
   resizeHotelImages,
   updateHotel,
-  uploadHotelImagesToCloud,
 } from "../controllers/hotelController";
 import { multerUploadHotelImages } from "../utils/multer";
 import reviewRouter from "./reviewRoutes";
@@ -40,7 +40,7 @@ hotelRouter
     attachUser,
     multerUploadHotelImages,
     resizeHotelImages,
-    uploadHotelImagesToCloud,
+    imageBufferToString,
     createHotel
   );
 
