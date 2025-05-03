@@ -4,7 +4,7 @@ import sharp from "sharp";
 import { auth } from "express-oauth2-jwt-bearer";
 import { v2 as cloudinary } from "cloudinary";
 
-import Hotel from "../models/hotelModel";
+import Hotel, { IHotel } from "../models/hotelModel";
 import Province from "../models/provinceModel";
 import User from "../models/userModel";
 import PropertyType from "../models/propertyTypeModel";
@@ -238,6 +238,7 @@ export const getMyHotels = async (
   next: NextFunction
 ) => {
   try {
+    console.log("getMyhotel");
     const { hotelId } = req.params;
 
     let query = Hotel.findById(
@@ -473,6 +474,7 @@ export const getHotelsOnUser = async (
   next: NextFunction
 ) => {
   try {
+    console.log("getHotelsOnUser");
     let filter = {};
 
     if (req.params.userId) filter = { ownerProperty: req.params.userId };
@@ -545,5 +547,39 @@ export const getHotelWithin = async (
     });
   } catch (error) {
     next(error);
+  }
+};
+
+export const deleteHotel = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    console.log("delete hotel");
+    const hotelID = req.params.hotelId;
+
+    const hotel: IHotel | null = await Hotel.findById(hotelID);
+
+    if (!hotel) {
+      return next(new AppError("No hotel found with that ID", 404, "fail"));
+    }
+    const imgId = hotel.images.map((img) => img.cloudinary_id);
+
+    await cloudinary.api.delete_resources(imgId);
+
+    const deletedHotel = await Hotel.findByIdAndDelete(hotel._id);
+    if (!deletedHotel) {
+      return next(new AppError("No hotel found with that ID", 404, "fail"));
+    }
+    const delaytime = 1000;
+    setTimeout(() => {
+      res.status(200).json({
+        status: "success",
+        message: `Delete ${deletedHotel.name} successfully.`,
+      });
+    }, delaytime);
+  } catch (err) {
+    next(err);
   }
 };

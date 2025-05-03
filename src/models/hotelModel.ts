@@ -1,12 +1,16 @@
 import mongoose from "mongoose";
 import { Document, Types } from "mongoose";
 import slugify from "slug";
-
+type HotelImage = {
+  url: string;
+  cloudinary_id: string;
+  _id: Types.ObjectId; // This is auto-added by Mongoose to subdocuments
+};
 export interface IHotel extends Document {
   name: string;
   description: string;
   slug: string;
-  images: string[];
+  images: HotelImage[];
   stars: number;
   ratingsAverage: number;
   ratingsQuantity: number;

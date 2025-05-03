@@ -2,6 +2,7 @@ import express from "express";
 import {
   attachUser,
   createHotel,
+  deleteHotel,
   getAllHotels,
   getHotel,
   getHotelsOnUser,
@@ -25,11 +26,15 @@ hotelRouter
   .route("/hotels-within/:distance/center/:latlng/unit/:unit")
   .get(getHotelWithin);
 
-hotelRouter.route("/myHotels/:hotelId").get(getMyHotels).patch(updateHotel);
-
+// for admin app
+hotelRouter
+  .route("/myHotels/:hotelId")
+  .get(jwtCheck, getMyHotels)
+  .patch(jwtCheck, updateHotel)
+  .delete(jwtCheck, deleteHotel);
 hotelRouter
   .route("/")
-  .get(getHotelsOnUser)
+  .get(jwtCheck, getHotelsOnUser)
   .post(
     jwtCheck,
     attachUser,
@@ -39,6 +44,7 @@ hotelRouter
     createHotel
   );
 
+// for client app
 hotelRouter.route("/:provinceName/:hotelID").get(getHotel);
 hotelRouter.route("/:province").get(getAllHotels);
 
