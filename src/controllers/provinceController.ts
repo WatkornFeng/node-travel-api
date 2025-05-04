@@ -8,11 +8,11 @@ interface IRequestUploadImage {
   uploadPicture: Buffer;
   uploadCover: Buffer;
 }
-declare global {
-  namespace Express {
-    interface Request extends IRequestUploadImage {}
-  }
-}
+// declare global {
+//   namespace Express {
+//     interface Request extends IRequestUploadImage {}
+//   }
+// }
 export const getAllProvinces = async (req: Request, res: Response) => {
   const provinces = await Province.find({}, "name -_id");
 
