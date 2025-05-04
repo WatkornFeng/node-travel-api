@@ -1,4 +1,4 @@
-import { Response, Request, NextFunction } from "express";
+import { Response, Request, NextFunction, Express } from "express";
 import { Types } from "mongoose";
 import { Multer } from "multer";
 import sharp from "sharp";
@@ -17,7 +17,9 @@ declare global {
   namespace Express {
     interface Request {
       userId?: string;
-      files?: { [fieldname: string]: Multer.File[] } | Multer.File[]; // If you're using multiple files
+      files?:
+        | { [fieldname: string]: Express.Multer.File[] }
+        | Express.Multer.File[];
     }
   }
 }

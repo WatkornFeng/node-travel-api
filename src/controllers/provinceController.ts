@@ -1,9 +1,9 @@
-import { Response, Request, NextFunction } from "express";
+import { Response, Request, NextFunction, Express } from "express";
 import sharp from "sharp";
 import { v2 as cloudinary } from "cloudinary";
-import { Multer } from "multer";
 import Province from "../models/provinceModel";
 import { AppError } from "../utils/AppError";
+import type { Multer } from "multer";
 
 interface IRequestUploadImage {
   uploadPicture: Buffer;
@@ -12,8 +12,10 @@ interface IRequestUploadImage {
 declare global {
   namespace Express {
     interface Request extends IRequestUploadImage {
-      file?: Multer.File;
-      files?: { [fieldname: string]: Multer.File[] } | Multer.File[];
+      file?: Express.Multer.File;
+      files?:
+        | { [fieldname: string]: Express.Multer.File[] }
+        | Express.Multer.File[];
     }
   }
 }
