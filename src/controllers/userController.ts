@@ -15,11 +15,6 @@ export const signup = async (
   try {
     const { email, name, locale } = req.body as userData;
 
-    let onlyName;
-    if (name) {
-      onlyName = name.split("@")[0];
-    }
-
     if (!email) {
       return next(new AppError("Please enter email", 400, "fail"));
     }
@@ -30,16 +25,18 @@ export const signup = async (
     if (user) {
       return res.status(200).json({
         status: "success",
+        message: "Login success",
       });
     }
-
+    const onlyName = name ? name.split("@")[0] : undefined;
     await User.create({
-      name: onlyName,
+      name: onlyName || "User",
       email,
       locale,
     });
     return res.status(200).json({
       status: "success",
+      message: "Sign up success",
     });
   } catch (err) {
     next(err);
@@ -86,9 +83,21 @@ export const getUserByEmail = async (
   next: NextFunction
 ) => {
   try {
-    const user = await User.findOne({ email: req.params.email }).select(
-      "_id name"
-    );
+    const { email } = req.params;
+
+    if (!email) {
+      return res.status(400).json({
+        status: "fail",
+        message: "Email parameter is required",
+      });
+    }
+    const user = await User.findOne({ email }).select("_id name");
+    if (!user) {
+      return res.status(404).json({
+        status: "fail",
+        message: "User not found",
+      });
+    }
 
     res.status(200).json({
       status: "success",

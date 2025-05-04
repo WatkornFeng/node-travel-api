@@ -36,7 +36,7 @@ export const attachUser = async (
 ) => {
   try {
     const email = req.auth?.payload["https://your-app.com/email"] as string;
-    console.log("email", email);
+
     const user = await User.findOne({ email }).select("_id");
 
     if (!user) {
@@ -238,7 +238,6 @@ export const getMyHotels = async (
   next: NextFunction
 ) => {
   try {
-    console.log("getMyhotel");
     const { hotelId } = req.params;
 
     let query = Hotel.findById(
@@ -349,7 +348,7 @@ export const createHotel = async (
     const province = provinceData
       ? provinceData.replace("Province", "").trim()
       : city;
-    console.log("prvince", province);
+
     const normalized = (str: string) => str.replace(/\s+/g, "").toLowerCase();
     const normalizedProvince = normalized(province);
     const provinceId = await Province.findOne({
@@ -497,7 +496,6 @@ export const getHotelsOnUser = async (
   next: NextFunction
 ) => {
   try {
-    console.log("getHotelsOnUser");
     let filter = {};
 
     if (req.params.userId) filter = { ownerProperty: req.params.userId };
@@ -579,7 +577,6 @@ export const deleteHotel = async (
   next: NextFunction
 ) => {
   try {
-    console.log("delete hotel");
     const hotelID = req.params.hotelId;
 
     const hotel: IHotel | null = await Hotel.findById(hotelID);

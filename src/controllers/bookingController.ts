@@ -114,7 +114,6 @@ export const webhookCheckout = async (
 export const createBookingCheckout = async (
   session: Stripe.Checkout.Session
 ) => {
-  console.log("session", session);
   const hotel = session.client_reference_id;
   const user = (await User.findOne({ email: session.customer_email }))?._id;
   const isPaid = session.payment_status === "paid" ? true : false;
