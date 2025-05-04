@@ -1,4 +1,4 @@
-import { Response, Request, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import { Types } from "mongoose";
 
 import sharp from "sharp";

@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import type { Request, Response, NextFunction } from "express";
 import Amenity from "../models/amenityModel";
 import { AppError } from "../utils/AppError";
 

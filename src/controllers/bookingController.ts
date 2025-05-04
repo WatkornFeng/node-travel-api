@@ -1,4 +1,4 @@
-import { NextFunction, Response, Request } from "express";
+import type { Request, Response, NextFunction } from "express";
 import Stripe from "stripe";
 import Hotel from "../models/hotelModel";
 import Booking from "../models/bookingModel";

@@ -1,4 +1,4 @@
-import { Response, Request, NextFunction } from "express";
+import type { Request, Response, NextFunction } from "express";
 import sharp from "sharp";
 import { v2 as cloudinary } from "cloudinary";
 import Province from "../models/provinceModel";
