@@ -1,4 +1,4 @@
-import express, { Express, Request, Response, NextFunction } from "express";
+import express, { Request, Response, NextFunction } from "express";
 import morgan from "morgan";
 import helmet from "helmet";
 import cors from "cors";
@@ -17,7 +17,7 @@ import favoriteRouter from "./routes/favoriteRoutes";
 
 import { AppError } from "./utils/AppError";
 
-const app: Express = express();
+const app = express();
 
 app.use(helmet());
 if (process.env.NODE_ENV === "development") {
