@@ -17,6 +17,7 @@ declare global {
   namespace Express {
     interface Request {
       userId?: string;
+      files?: { [fieldname: string]: Multer.File[] } | Multer.File[]; // If you're using multiple files
     }
   }
 }
