@@ -13,13 +13,13 @@ import { AppError } from "../utils/AppError";
 import { getLocationFromLatLng } from "../utils/getLocation";
 import { DATA_URL_IMAGE_SCHEMA } from "./constant";
 
-// declare global {
-//   namespace Express {
-//     interface Request {
-//       userId?: string;
-//     }
-//   }
-// }
+declare global {
+  namespace Express {
+    interface Request {
+      userId?: string;
+    }
+  }
+}
 // Step 1: Create JWT Check middleware
 export const jwtCheck = auth({
   // change audience later

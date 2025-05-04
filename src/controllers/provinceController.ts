@@ -4,20 +4,15 @@ import { v2 as cloudinary } from "cloudinary";
 import Province from "../models/provinceModel";
 import { AppError } from "../utils/AppError";
 
-// interface IRequestUploadImage {
-//   uploadPicture: Buffer;
-//   uploadCover: Buffer;
-// }
-// declare global {
-//   namespace Express {
-//     interface Request extends IRequestUploadImage {
-//       file?: Express.Multer.File;
-//       files?:
-//         | { [fieldname: string]: Express.Multer.File[] }
-//         | Express.Multer.File[];
-//     }
-//   }
-// }
+interface IRequestUploadImage {
+  uploadPicture: Buffer;
+  uploadCover: Buffer;
+}
+declare global {
+  namespace Express {
+    interface Request extends IRequestUploadImage {}
+  }
+}
 export const getAllProvinces = async (req: Request, res: Response) => {
   const provinces = await Province.find({}, "name -_id");
 
