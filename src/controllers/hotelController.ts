@@ -1,5 +1,6 @@
 import { Response, Request, NextFunction } from "express";
 import { Types } from "mongoose";
+import { Multer } from "multer";
 import sharp from "sharp";
 import { auth } from "express-oauth2-jwt-bearer";
 import { v2 as cloudinary } from "cloudinary";
@@ -8,7 +9,6 @@ import Hotel, { IHotel } from "../models/hotelModel";
 import Province from "../models/provinceModel";
 import User from "../models/userModel";
 import PropertyType from "../models/propertyTypeModel";
-import multer, { Multer } from "multer";
 import { AppError } from "../utils/AppError";
 import { getLocationFromLatLng } from "../utils/getLocation";
 import { DATA_URL_IMAGE_SCHEMA } from "./constant";

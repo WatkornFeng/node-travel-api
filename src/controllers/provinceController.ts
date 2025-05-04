@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import sharp from "sharp";
 import { v2 as cloudinary } from "cloudinary";
-import multer, { Multer } from "multer";
+import { Multer } from "multer";
 import Province from "../models/provinceModel";
 import { AppError } from "../utils/AppError";
 
