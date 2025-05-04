@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
+
 import { Types } from "mongoose";
 
 import sharp from "sharp";
@@ -443,7 +444,7 @@ export const resizeHotelImages = async (
   res: Response,
   next: NextFunction
 ) => {
-  const files = req.files as { [fieldname: string]: Express.Multer.File[] };
+  const files = req.files;
 
   if (!files || Object.keys(files).length === 0)
     return next(

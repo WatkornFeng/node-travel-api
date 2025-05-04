@@ -84,9 +84,9 @@ export const resizeProvincesImage = async (
   const province = await Province.findOne().where({ name: provinceName });
 
   if (province) return next(new AppError("Duplicate Field", 400, "fail"));
-  const files = req.files as { [fieldname: string]: Express.Multer.File[] };
-  const picture = files["picture"][0];
-  const cover = files["cover"][0];
+  const files = req.files;
+  const picture = files && files["picture"][0];
+  const cover = files && files["cover"][0];
 
   if (!picture || !cover)
     return next(
