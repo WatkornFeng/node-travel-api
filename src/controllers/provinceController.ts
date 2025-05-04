@@ -4,20 +4,20 @@ import { v2 as cloudinary } from "cloudinary";
 import Province from "../models/provinceModel";
 import { AppError } from "../utils/AppError";
 
-interface IRequestUploadImage {
-  uploadPicture: Buffer;
-  uploadCover: Buffer;
-}
-declare global {
-  namespace Express {
-    interface Request extends IRequestUploadImage {
-      file?: Express.Multer.File;
-      files?:
-        | { [fieldname: string]: Express.Multer.File[] }
-        | Express.Multer.File[];
-    }
-  }
-}
+// interface IRequestUploadImage {
+//   uploadPicture: Buffer;
+//   uploadCover: Buffer;
+// }
+// declare global {
+//   namespace Express {
+//     interface Request extends IRequestUploadImage {
+//       file?: Express.Multer.File;
+//       files?:
+//         | { [fieldname: string]: Express.Multer.File[] }
+//         | Express.Multer.File[];
+//     }
+//   }
+// }
 export const getAllProvinces = async (req: Request, res: Response) => {
   const provinces = await Province.find({}, "name -_id");
 
@@ -155,8 +155,10 @@ export const uploadProvinceImageToDB = async (
 ) => {
   try {
     const provinceName = req.body.province;
+
     const b64Cover = Buffer.from(req.uploadCover).toString("base64");
     const b64Picture = Buffer.from(req.uploadPicture).toString("base64");
+
     let dataURLCover = "data:" + "image/jpeg" + ";base64," + b64Cover;
     let dataURLPicture = "data:" + "image/jpeg" + ";base64," + b64Picture;
 
