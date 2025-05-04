@@ -1,6 +1,6 @@
-import { Response, Request, NextFunction, Express } from "express";
+import { Response, Request, NextFunction } from "express";
 import { Types } from "mongoose";
-import { Multer } from "multer";
+
 import sharp from "sharp";
 import { auth } from "express-oauth2-jwt-bearer";
 import { v2 as cloudinary } from "cloudinary";

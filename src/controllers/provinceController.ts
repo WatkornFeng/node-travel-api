@@ -1,9 +1,8 @@
-import { Response, Request, NextFunction, Express } from "express";
+import { Response, Request, NextFunction } from "express";
 import sharp from "sharp";
 import { v2 as cloudinary } from "cloudinary";
 import Province from "../models/provinceModel";
 import { AppError } from "../utils/AppError";
-import type { Multer } from "multer";
 
 interface IRequestUploadImage {
   uploadPicture: Buffer;
