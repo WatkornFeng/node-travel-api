@@ -8,7 +8,7 @@ import Hotel, { IHotel } from "../models/hotelModel";
 import Province from "../models/provinceModel";
 import User from "../models/userModel";
 import PropertyType from "../models/propertyTypeModel";
-
+import multer, { Multer } from "multer";
 import { AppError } from "../utils/AppError";
 import { getLocationFromLatLng } from "../utils/getLocation";
 import { DATA_URL_IMAGE_SCHEMA } from "./constant";

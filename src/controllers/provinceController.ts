@@ -1,7 +1,7 @@
 import { Response, Request, NextFunction } from "express";
 import sharp from "sharp";
 import { v2 as cloudinary } from "cloudinary";
-
+import multer, { Multer } from "multer";
 import Province from "../models/provinceModel";
 import { AppError } from "../utils/AppError";
 
@@ -11,7 +11,10 @@ interface IRequestUploadImage {
 }
 declare global {
   namespace Express {
-    interface Request extends IRequestUploadImage {}
+    interface Request extends IRequestUploadImage {
+      file?: Multer.File;
+      files?: { [fieldname: string]: Multer.File[] } | Multer.File[];
+    }
   }
 }
 export const getAllProvinces = async (req: Request, res: Response) => {
@@ -116,7 +119,10 @@ interface IUploadImageResult {
   };
   err: Error;
 }
-
+interface ImageResult {
+  secure_url: string;
+  public_id: string;
+}
 const uploadProvinceImage = async (imagePath: string[]) => {
   const options = {
     use_filename: true,
@@ -127,7 +133,7 @@ const uploadProvinceImage = async (imagePath: string[]) => {
 
   try {
     // Upload the image
-    let arrayResult = [];
+    let arrayResult: ImageResult[] = [];
     for (const image of imagePath) {
       const { secure_url, public_id } = await cloudinary.uploader.upload(
         image,
