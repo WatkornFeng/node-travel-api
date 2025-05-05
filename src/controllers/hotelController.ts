@@ -593,13 +593,11 @@ export const deleteHotel = async (
     if (!deletedHotel) {
       return next(new AppError("No hotel found with that ID", 404, "fail"));
     }
-    const delaytime = 1000;
-    setTimeout(() => {
-      res.status(200).json({
-        status: "success",
-        message: `Delete ${deletedHotel.name} successfully.`,
-      });
-    }, delaytime);
+
+    res.status(200).json({
+      status: "success",
+      message: `Delete ${deletedHotel.name} successfully.`,
+    });
   } catch (err) {
     next(err);
   }

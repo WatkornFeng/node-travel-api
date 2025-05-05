@@ -3,6 +3,7 @@ import sharp from "sharp";
 import { v2 as cloudinary } from "cloudinary";
 import Province from "../models/provinceModel";
 import { AppError } from "../utils/AppError";
+import Hotel from "../models/hotelModel";
 
 interface IRequestUploadImage {
   uploadPicture: Buffer;
@@ -56,11 +57,13 @@ export const getProvince = async (
     const decodedName = decodeURIComponent(rawProvinceName); // e.g. "Amnat Charoen"
     const province = await Province.findOne({
       name: { $regex: new RegExp(decodedName, "i") }, // 'i' for case-insensitive search + not exact match
-    }).select("name pictureCover");
+    }).select("name pictureCover _id");
+    const countHotel = await Hotel.countDocuments({ province: province?._id });
 
     res.status(200).json({
       status: "success",
       province,
+      countHotel,
     });
   } catch (error) {
     next(error);
